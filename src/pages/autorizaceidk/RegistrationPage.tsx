@@ -1,0 +1,4 @@
+interface RegisterProps{
+    onRegisterSuccess:()=> void;
+}
+
