@@ -60,7 +60,7 @@ const CreateGame = () => {
     };
 
     return (
-        <form onSubmit={handleCreateGame}>
+        <form onSubmit={handleCreateGame} className="bg-yellow-200">
             <p>nazev</p>
             <input
                 type="text"

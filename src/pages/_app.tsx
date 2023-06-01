@@ -10,10 +10,13 @@ import LoginOrRegister from "components/LoginOrRegister";
 export default function App() {
 
   return <>
-  <CreateGame/>
-    <GameList/>
-    <GameDetails id={""} description={""} developer={""} genres={[]} name={""} price={0} publisher={""} releaseDate={""} sale={0}/>
+      <LoginOrRegister/>
   </>
 
 }
-/*<LoginOrRegister/>*/
+/*
+ <CreateGame/>
+      <GameList/>
+      <GameDetails id={""} description={""} developer={""} genres={[]} name={""} price={0} publisher={""} releaseDate={""} sale={0}  />
+
+* */

@@ -1,6 +1,7 @@
 import useSWR from 'swr';
-import GameList from "../../components/CreateGame";
-
+import GameList from "../../components/GameList";
+import CreateGame from "../../components/CreateGame";
+import GameDetails from "../../components/GameDetails";
 
 interface ProfilePageProps {
     onLogout: () => void;
@@ -31,8 +32,11 @@ const ProfilePage = ({ onLogout }:ProfilePageProps ) => {
             <p>crated at: {data.createdAt}</p>
             <p>updated at: {data.updatedAt}</p>
             <button onClick={onLogout}>Logout</button>
+            <CreateGame/>
 
-            <GameList></GameList>
+            <GameList/>
+
+
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import GameDetails from "./GameDetails";
 interface GameProps {
     name: string;
     description: string;
@@ -14,6 +14,11 @@ interface GameProps {
 
 export default function GameList() {
     const [games, setGames] = useState<GameProps[]>([]);
+    const [chosenGame, setOpenGame] = useState<GameProps | null>(null);
+
+
+
+
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -42,19 +47,30 @@ export default function GameList() {
         fetchGames();
     }, []);
 
+    const handleSeeDetails = (game: GameProps) => {
+        setOpenGame(game);
+    };
 
+    const handleExitDetails = () => {
+        setOpenGame(null);
+    };
     console.log(games);
 
     return (
-        <div>
+        <div className="bg-blue-200">
             {games.map((game) => (
                 <div key={game.id}>
                     <h2>{game.name}</h2>
                     <p>{game.description}</p>
                     <p>{game.price}</p>
+                    <button onClick={() => handleSeeDetails(game)}>Details</button>
 
                 </div>
             ))}
+
+            {chosenGame && (
+                <GameDetails game={chosenGame} onExitDetails={handleExitDetails} />
+            )}
         </div>
     );
 };
