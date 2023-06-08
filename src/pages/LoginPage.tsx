@@ -38,16 +38,20 @@ const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
     return (
         <form onSubmit={handleLogin}>
             <input
+                placeholder="e-mail"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-            />
+                className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"/> <br/>
             <input
+                placeholder="heslo"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-            />
+                className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"/><br/>
+            <div className="bg-gray-200 m-1.5 py-2.5 px-6 text-center text-2xl font-semibold rounded-full">
             <button type="submit">Login</button>
+            </div>
         </form>
     );
 };

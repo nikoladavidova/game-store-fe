@@ -41,24 +41,25 @@ const RegistrationPage= ({ onRegisterSuccess: onRegisterSuccess }:RegisterProps)
 
     return (
         <div>
-            <h2>registrace</h2>
             <form onSubmit={handleRegistration}>
                 <label>
-                    username:
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input type="text" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)}
+                           className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"  />
                 </label>
                 <br />
                 <label>
-                    email:
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="email" placeholder="e-mail" value={email} onChange={(e) => setEmail(e.target.value)}
+                           className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"/>
                 </label>
                 <br />
                 <label>
-                    password:
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input type="password" placeholder="heslo" value={password} onChange={(e) => setPassword(e.target.value)}
+                           className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"/>
                 </label>
                 <br />
-                <button type="submit">register</button>
+                <div className="bg-gray-200 m-1.5 py-2.5 px-6 text-center text-2xl font-semibold rounded-full">
+                    <button type="submit">Register</button>
+                </div>
             </form>
         </div>
     );

@@ -25,6 +25,8 @@ const CreateGame = () => {
     const [developer, setDeveloper] = useState('');
     const [releaseDate, setReleaseDate] = useState('');
 
+    const [show,setShow ] = useState(true);
+
 
     const handleCreateGame = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,58 +61,94 @@ const CreateGame = () => {
         }
     };
 
+
+
+
+
+    const handleShowHide=()=>{
+        setShow(!show)
+    }
+
+
     return (
-        <form onSubmit={handleCreateGame} className="bg-yellow-200">
-            <p>nazev</p>
-            <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            /><br/>
-            <p>description</p>
-            <input
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
 
-            />
-            <p>cena</p>
-            <input
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(parseFloat(e.target.value))}
+        show ? <div className={"w-4/5 flex"}>
+            <button onClick={handleShowHide} className={"text-4xl"}>Create Game</button>
+            </div>:
+            <>
+                <div className={"w-4/5 flex"}>
+                    <button onClick={handleShowHide} className={"text-4xl"}>Create Game</button>
+                </div>
+<div className={""}>
+            <form onSubmit={handleCreateGame} className="bg-yellow-200 w-2/3 p-3.5">
 
-            /><br/>
-            <p>sleva</p>
-            <input
-                type="number"
-                value={sale}
-                onChange={(e) => setSale(parseFloat(e.target.value))}
+                <input
+                    placeholder="nazev"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"
+                />
 
-            />
-            <p>publisher</p>
-            <input
-                type="text"
-                value={publisher}
-                onChange={(e) => setPublisher(e.target.value)}
+                <input
+                    placeholder="description"
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"
+                />
+                <input
+                    placeholder="cena"
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(parseFloat(e.target.value))}
+                    className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"
+                /><br/>
+                <input
+                    placeholder="sale"
+                    type="number"
+                    value={sale}
+                    onChange={(e) => setSale(parseFloat(e.target.value))}
+                    className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"
+                />
 
-            /><br/>
-            <p>developer</p>
-            <input
-                type="text"
-                value={developer}
-                onChange={(e) => setDeveloper(e.target.value)}
+                <input
+                    placeholder="publisher"
+                    type="text"
+                    value={publisher}
+                    onChange={(e) => setPublisher(e.target.value)}
+                    className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"
+                />
+                <input
+                    placeholder="developer"
+                    type="text"
+                    value={developer}
+                    onChange={(e) => setDeveloper(e.target.value)}
+                    className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"
+                />
+                <p>datum ve formatu: 2023-05-23T13:49:17.678Z  </p>
+                <input
+                    placeholder="datum"
+                    type="text"
+                    value={releaseDate}
+                    onChange={(e) => setReleaseDate(e.target.value)}
+                    className="bg-gray-100 m-3 rounded-lg p-1.5 placeholder-gray-400"
+                /><br/>
+                <div className="bg-gray-200 m-1.5 py-2.5 px-6 text-center text-2xl font-semibold rounded-full">
+                    <button type="submit">Create</button>
+                </div>
+            </form>
+</div>
+</>
 
-            /><br/>
-            <p>datum ve formatu: 2023-05-23T13:49:17.678Z  </p>
-            <input
-                type="text"
-                value={releaseDate}
-                onChange={(e) => setReleaseDate(e.target.value)}
 
-            /><br/>
-            <button type="submit">Create</button>
-        </form>
+
+
+
+
+
+
+
     );
 };
 
