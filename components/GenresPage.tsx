@@ -12,11 +12,11 @@ export async function fetchGenres() {
             const genresData: Genre[] = await response.json();
             return genresData;
         } else {
-            console.log('Failed to fetch genres');
+            console.log('fail');
             return [];
         }
     } catch (error) {
-        console.log('Error fetching genres:', error);
+        console.log(error);
         return [];
     }
 }
@@ -36,11 +36,11 @@ export async function createGenre(name: string) {
             const newGenre: Genre = await response.json();
             return newGenre;
         } else {
-            console.log('Failed to create genre');
+            console.log('Failcreate genre');
             return null;
         }
     } catch (error) {
-        console.log('Error creating genre:', error);
+        console.log(error);
         return null;
     }
 }
@@ -136,7 +136,7 @@ const GenreList: React.FC<GenreListProps> = ({ genres, onGenreDelete }) => {
 
 
 interface GenresPageProps {
-    onAddGenre: (genreId: string) => void; // Add the onAddGenre prop here
+    onAddGenre: (genreId: string) => void;
 }
 
 const GenresPage: React.FC = () => {
@@ -156,6 +156,7 @@ const GenresPage: React.FC = () => {
     }, []);
 
     const handleGenreCreate = async (genre: Genre) => {
+
         setGenres((prevGenres) => [...prevGenres, genre]);
     };
 

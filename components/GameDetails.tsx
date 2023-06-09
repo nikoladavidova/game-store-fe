@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import GenresPage from "./GenresPage";
+
+
 interface GameProps {
     name: string;
     description: string;
@@ -8,9 +10,16 @@ interface GameProps {
     publisher: string;
     developer: string;
     releaseDate: string;
-    genres: string[];
+    genres: Genres[];
     id: string;
 }
+
+interface Genres{
+    id: "string";
+    name: "string";
+}
+
+
 interface GameDetailsProps {
     game: GameProps;
     onExitDetails: () => void;
@@ -22,10 +31,39 @@ interface GameDetailsProps {
 const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDeleteGame, onSaveGame }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedGame, setEditedGame] = useState<GameProps>(game);
+const [openGame, setOpenGame] = useState<GameProps>(game);
+    useEffect(() => {
 
-    const handleDeleteGame = () => {
-        onDeleteGame(game.id);
-    };
+        const fetchGame= async () => {
+            try {
+                const response = await fetch('http://localhost:3000/games/${openGame.id}', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
+                    },
+                });
+
+
+                if (response.ok) {
+                    const gamesData: GameProps[] = await response.json();
+                    setOpenGame(openGame);
+                    console.log(openGame);
+                    console.log('yesssssssssssssssss')
+                } else {
+                    console.log('fail GET game');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+
+
+        fetchGame();
+    }, []);
+
+
+
 
     const handleEditFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -36,7 +74,9 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
             [name]: numberInputs,
         });
     };
-
+    const handleDeleteGame = () => {
+        onDeleteGame(game.id);
+    };
     /*mzs savenuti*/
     const handleSaveGame = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -44,7 +84,7 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
             const response = await fetch(`http://localhost:3000/games/${editedGame.id}`, {
 
                 method: 'PUT',
-                               headers: {
+                headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
                 },
@@ -61,6 +101,7 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
         } catch (error) {
             console.log( error);
         }
+        console.log(editedGame);
     };
 
     const handleEditClick = () => {
@@ -71,7 +112,7 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
         return (
             <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-green-300">
                 <h2>Edit Game</h2>
-                <form>
+                <form key={editedGame.id}>
                     <label>
                         nayev
                         <input
@@ -135,6 +176,11 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
                             onChange={handleEditFieldChange}
                         />
                     </label>
+
+
+
+
+
                     <button onClick={handleSaveGame}>Save</button>
                     <button onClick={() => setIsEditing(false)}>Cancel</button>
                 </form>
@@ -144,32 +190,23 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
 
     return (
         <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-green-300">
-            <>
-                <h2>{game.name}</h2>
-                <h2>{game.description}</h2>
-                <h2>{game.developer}</h2>
-                <h2>{game.price}</h2>
-                <h2>{game.sale}</h2>
+
+                        <div key={game.id} className="content-center bg-blue-200 w-1/5 h-32 inline-block m-10 p-5">
+                            <h2 className="flex items-center justify-center">{game.name}</h2>
+                            <h2 className="flex items-center justify-center">{game.description}</h2>
+                            <p className="flex items-center justify-center">{game.developer}</p>
+                            <p className="flex items-center justify-center">{game.price}</p>
+                            <p className="flex items-center justify-center">{game.sale}</p>
+
+                        </div>
 
                 <button onClick={handleDeleteGame}>Delete</button>
                 <button onClick={onExitDetails}>Exit Details</button>
                 <button onClick={handleEditClick}>Edit</button>
-            </>
+
         </div>
     );
 };
 
 export default GameDetails;
 
-
-/*
-
-
-<ul>
-    {game.genres && Array.isArray(game.genres) ? (
-        game.genres.map((genre) => <li key={genre}>{genre}</li>)
-    ) : (
-        <li>No genres available</li>
-    )}
-</ul>
- */

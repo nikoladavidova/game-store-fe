@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import GameDetails from "./GameDetails";
-
+import GenresPage from "./GenresPage";
 
 interface GameProps {
     name: string;
@@ -10,20 +10,25 @@ interface GameProps {
     publisher: string;
     developer: string;
     releaseDate: string;
-    genres: string[];
+    genres: GenresProps[];
     id: string;
 }
 
+interface GenresProps{
+    id: "string";
+    name: "string";
+}
 
 export default function GameList() {
     const [games, setGames] = useState<GameProps[]>([]);
     const [openGame, setOpenGame] = useState<GameProps | null>(null);
-
+    const [gameGenres,setGameGenres]= useState<GenresProps[]>([]);
 
     useEffect(() => {
         const fetchGames = async () => {
             try {
                 const response = await fetch('http://localhost:3000/games', {
+                    method: 'GET',
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
                     },
@@ -47,8 +52,11 @@ export default function GameList() {
     }, []);
 
 
+
     const handleSeeDetails = (game: GameProps) => {
         setOpenGame(game);
+
+
     };
 
 
@@ -76,19 +84,26 @@ export default function GameList() {
 
                 console.log('fail delete');
             }
-        } catch (error) {console.log(error);
+        } catch (error) {
+            console.log(error);
         }
     };
 
 
     const handleSaveGame = (editedGame: GameProps) => {
-        const updatedGames = games.map((game) => {
-            if (game.id === editedGame.id) {
-                return editedGame;
-            }
-            return game;
-        });
-        setGames(updatedGames);
+        const isExistingGame = games.some((game) => game.id === editedGame.id);
+
+        if (isExistingGame) {
+            const updatedGames = games.map((game) => {
+                if (game.id === editedGame.id) {
+                    return editedGame;
+                }
+                return game;
+            });
+            setGames(updatedGames);
+        } else {
+            setGames((prevGames) => [...prevGames, editedGame]);
+        }
     };
 
 
