@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
+import {Genre} from "./types"
 export async function fetchGenres() {
     try {
         const response = await fetch('http://localhost:3000/genres', {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
             },
         });
 
+
         if (response.ok) {
             const genresData: Genre[] = await response.json();
             return genresData;
+            console.log("genres fetched")
         } else {
             console.log('fail');
             return [];
@@ -20,6 +24,7 @@ export async function fetchGenres() {
         return [];
     }
 }
+
 
 export async function createGenre(name: string) {
     try {
@@ -32,11 +37,12 @@ export async function createGenre(name: string) {
             body: JSON.stringify({ name }),
         });
 
+
         if (response.ok) {
             const newGenre: Genre = await response.json();
             return newGenre;
         } else {
-            console.log('Failcreate genre');
+            console.log('Fail create genre');
             return null;
         }
     } catch (error) {
@@ -44,6 +50,7 @@ export async function createGenre(name: string) {
         return null;
     }
 }
+
 
 export async function deleteGenre(id: string) {
     try {
@@ -53,6 +60,7 @@ export async function deleteGenre(id: string) {
                 Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
             },
         });
+
 
         if (response.ok) {
             return true;
@@ -67,24 +75,32 @@ export async function deleteGenre(id: string) {
 }
 
 
-interface Genre {
-    id: string;
-    name: string;
-}
+
+
+
+
 
 interface GenreFormProps {
     onGenreCreate: (genre: Genre) => void;
 }
 
+
+
+
+
+
 const GenreForm: React.FC<GenreFormProps> = ({ onGenreCreate }) => {
     const [genreName, setGenreName] = useState('');
+
 
     const handleGenreNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setGenreName(event.target.value);
     };
 
+
     const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+
 
         try {
             const newGenre = await createGenre(genreName);
@@ -96,6 +112,7 @@ const GenreForm: React.FC<GenreFormProps> = ({ onGenreCreate }) => {
             console.log('Error creating genre:', error);
         }
     };
+
 
     return (
         <form onSubmit={handleFormSubmit}>
@@ -111,22 +128,26 @@ const GenreForm: React.FC<GenreFormProps> = ({ onGenreCreate }) => {
 };
 
 
+
+
 interface GenreListProps {
     genres: Genre[];
     onGenreDelete: (id: string) => void;
 }
+
 
 const GenreList: React.FC<GenreListProps> = ({ genres, onGenreDelete }) => {
     const handleGenreDelete = (id: string) => {
         onGenreDelete(id);
     };
 
+
     return (
         <ul>
             {genres.map((genre) => (
                 <li key={genre.id}>
                     {genre.name}
-                    {genre.id}
+
                     <button onClick={() => handleGenreDelete(genre.id)}>Delete</button>
                 </li>
             ))}
@@ -135,12 +156,16 @@ const GenreList: React.FC<GenreListProps> = ({ genres, onGenreDelete }) => {
 };
 
 
+
+
 interface GenresPageProps {
     onAddGenre: (genreId: string) => void;
 }
 
-const GenresPage: React.FC = () => {
+
+const GenresPage: React.FC<GenresPageProps> = ({ onAddGenre }) => {
     const [genres, setGenres] = useState<Genre[]>([]);
+
 
     const fetchGenresData = async () => {
         try {
@@ -151,14 +176,18 @@ const GenresPage: React.FC = () => {
         }
     };
 
+
     useEffect(() => {
         fetchGenresData();
     }, []);
 
+
     const handleGenreCreate = async (genre: Genre) => {
+
 
         setGenres((prevGenres) => [...prevGenres, genre]);
     };
+
 
     const handleGenreDelete = async (id: string) => {
         try {
@@ -171,6 +200,7 @@ const GenresPage: React.FC = () => {
         }
     };
 
+
     return (
         <div>
             <h1>Genres</h1>
@@ -179,6 +209,8 @@ const GenresPage: React.FC = () => {
         </div>
     );
 };
+
+
 
 
 export default GenresPage;
