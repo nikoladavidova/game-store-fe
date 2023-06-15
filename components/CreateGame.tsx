@@ -72,15 +72,16 @@ const CreateGame = () => {
 
     return (
 
-        show ? <div className={"w-4/5 flex"}>
+        show ? <div className={"w-4/5 flex font-semibold"}>
             <button onClick={handleShowHide} className={"text-4xl"}>Create Game</button>
             </div>:
             <>
-                <div className={"w-4/5 flex"}>
+                <div className={"w-4/5 flex font-semibold"}>
                     <button onClick={handleShowHide} className={"text-4xl"}>Create Game</button>
                 </div>
 <div className={""}>
-            <form onSubmit={handleCreateGame} className="bg-yellow-200 w-2/3 p-3.5">
+
+            <form onSubmit={handleCreateGame} className="font-semibold border-8 border-gray-200 rounded-lg w-2/3 p-3.5">
 
                 <input
                     placeholder="nazev"

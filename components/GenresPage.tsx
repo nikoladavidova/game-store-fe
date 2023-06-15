@@ -118,11 +118,12 @@ const GenreForm: React.FC<GenreFormProps> = ({ onGenreCreate }) => {
         <form onSubmit={handleFormSubmit}>
             <input
                 type="text"
-                placeholder="Enter genre name"
+                placeholder="nazev zanru"
                 value={genreName}
                 onChange={handleGenreNameChange}
             />
-            <button type="submit">Create Genre</button>
+
+            <button type="submit" className="self-center font-semibold bg-gray-200 m-1.5 py-2.5 px-3 text-center  rounded-full">Create Genre</button>
         </form>
     );
 };
@@ -148,7 +149,7 @@ const GenreList: React.FC<GenreListProps> = ({ genres, onGenreDelete }) => {
                 <li key={genre.id}>
                     {genre.name}
 
-                    <button onClick={() => handleGenreDelete(genre.id)}>Delete</button>
+                    <button onClick={() => handleGenreDelete(genre.id)} className="self-center font-semibold bg-gray-200 m-1 py-2 px-3 text-center  rounded-full">Delete</button>
                 </li>
             ))}
         </ul>

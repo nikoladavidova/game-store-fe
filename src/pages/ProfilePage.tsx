@@ -32,16 +32,18 @@ const ProfilePage = ({ onLogout }:ProfilePageProps ) => {
     return (
         <div>
 
-            <div className={"object-center inline-block bg-blue-50 w-1/5 float-right"}>
+            <div className={"object-center inline-block w-1/5 float-right"}>
+                <div className="object-center inline-block font-semibold p-2 border-8 border-gray-200 rounded-lg ">
             <h2>user</h2>
             <p>email:{data.email}</p>
             <p>crated at: {data.createdAt}</p>
             <p>updated at: {data.updatedAt}</p>
 
               <div className={"flex items-center justify-center"}>
-            <button onClick={onLogout} className={"self-center bg-green-300"}>Logout</button></div>
 
-                <div className={"object-center inline-block bg-red-400 float-right"}>  <GenresPage /></div>
+            <button onClick={onLogout} className="self-center font-semibold bg-gray-200 m-1.5 py-2.5 px-3 text-center  rounded-full">Logout</button></div>
+            </div>
+                <div className="object-center float-right inline-block flex flex-col font-semibold p-4 border-8 border-gray-200 rounded-lg ">  <GenresPage /></div>
         </div>
 
 

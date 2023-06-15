@@ -88,10 +88,9 @@ const GameList: React.FC<GameListProps> = ({ games, genres }) => {
     return (
         <div>
             {fetchedGames.map((game) => (
-                <div key={game.id} className="content-center bg-blue-200 w-1/5 h-32 inline-block m-10 p-5">
+                <div key={game.id} className="content-center font-semibold border-8 border-gray-200 rounded-lg w-1/5 h-32 inline-block m-10 p-5">
                     <h2 className="flex items-center justify-center">{game.name}</h2>
-                    <p className="flex items-center justify-center">{game.description}</p>
-                    <p className="flex items-center justify-center">{game.sale}</p>
+                    <p className="flex items-center justify-center"><p>description</p>p{game.description}</p>
                     <button onClick={() => handleSeeDetails(game)}>Details</button>
                 </div>
             ))}

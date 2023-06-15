@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import GenresPage from './GenresPage';
+import { GenreSelection } from './GenresSelection';
+import { GameProps, Genre } from './types';
 
-
-import {GenreSelection} from "./GenresSelection";
-import {GameProps, Genre} from "./types";
 interface GameDetailsProps {
     game: GameProps;
     onExitDetails: () => void;
@@ -12,85 +11,23 @@ interface GameDetailsProps {
     genres: Genre[];
 }
 
-
-const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDeleteGame, onSaveGame, }) => {
+const GameDetails: React.FC<GameDetailsProps> = ({
+                                                     game,
+                                                     onExitDetails,
+                                                     onDeleteGame,
+                                                     onSaveGame,
+                                                 }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [editedGame, setEditedGame] = useState<GameProps>(game); //holds edited game object
-    const [genreId, setGenreId] = useState('');
+    const [editedGame, setEditedGame] = useState<GameProps>(game);
     const [selectedGenres, setSelectedGenres] = useState<{ id: string; name: string }[]>([]);
-
-
-    const [genres, setGenres] = useState<Genre[]>([]);
-//
-///genres fetching
-    useEffect(() => {
-        const fetchGenres = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/genres', {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
-                    },
-                });
-
-
-                if (response.ok) {
-                    const genresData: Genre[] = await response.json();
-                    setGenres(genresData);
-                } else {
-                    console.log('Failed to fetch genres');
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-
-        fetchGenres();
-    }, []);
-
-
-//data from JSON jsou stored into editedgame a genres
-    useEffect(() => {
-        const fetchGame = async () => {
-            try {
-                const [gameResponse] = await Promise.all([
-                    fetch(`http://localhost:3000/games/${game.id}`, {
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
-                        },
-                    }),
-                ]);
-
-
-                if (gameResponse.ok) {
-                    const gameData: GameProps = await gameResponse.json();
-                    setEditedGame(gameData);
-                } else {
-                    console.log('Failed to get game');
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        console.log("Genres prop in GameDetails:", genres);
-
-
-        fetchGame();
-    }, [game.id]);
-
-
+const [genres, setGenres]=useState<Genre[]>([]);
     const handleDeleteGame = () => {
         onDeleteGame(game.id);
     };
 
-
-// A function that handles the change event of input fields used for editing game details. It updates the editedGame state by cloning the previous game object and updating the specific field that was changed.
     const handleEditFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         const numberInputs = name === 'price' || name === 'sale' ? parseFloat(value) : value;
-
 
         setEditedGame((prevGame) => ({
             ...prevGame,
@@ -98,8 +35,6 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
         }));
     };
 
-
-//It prepares the updated game object, sends a PUT request to the server to update the game, and if successful, calls the onSaveGame function with the updated game data.
     const handleSaveGame = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
@@ -111,9 +46,6 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
                 },
                 body: JSON.stringify(editedGame),
             });
-
-
-
 
             if (response.ok) {
                 const updatedGame: GameProps = await response.json();
@@ -127,36 +59,14 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
         }
     };
 
-
-
-
-
-
-
-
-// sets the isEditing state to true, enabling the editing mode.
     const handleEditClick = () => {
         setIsEditing(true);
+        console.log(game);
     };
-
-
-//A function that sets the genreId state when adding a new genre to the game.
-    const handleAddGenre = (genreId: string) => {
-        setGenreId(genreId);
-    };
-
-
-//adds a new genre to the editedGame state when it is selected.
-
-
-
-
-
 
     const handleGenreSelect = (genre: { id: string; name: string }) => {
         setSelectedGenres((prevSelectedGenres) => [...prevSelectedGenres, genre]);
     };
-
 
     const handleGenreDeselect = (genreId: string) => {
         setSelectedGenres((prevSelectedGenres) =>
@@ -164,13 +74,35 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
         );
     };
 
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/genres', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const genresData: Genre[] = await response.json();
+                    setGenres(genresData);
+                } else {
+                    console.log('Failed to fetch genres');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchGenres();
+    }, []);
 
     if (isEditing) {
         return (
-            <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-green-300">
+            <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-gray-200">
                 <h2>Edit Game</h2>
                 <form key={editedGame.id}>
-                    {/* Input fields for editing game details */}
                     <label>
                         Name:
                         <input type="text" name="name" value={editedGame.name} onChange={handleEditFieldChange} />
@@ -204,29 +136,26 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
                             onChange={handleEditFieldChange}
                         />
                     </label>
+
                     <div>
                         Genres:
                         <GenreSelection
-                            genres={genres} // Assuming you have a variable named 'genres' containing an array of Genre objects
+                            genres={genres}
                             selectedGenres={selectedGenres}
                             onGenreSelect={handleGenreSelect}
                             onGenreDeselect={handleGenreDeselect}
                         />
                     </div>
-
-
-                    <button type="submit" onClick={handleSaveGame}>
-                        Save
-                    </button>
-                    <button onClick={onExitDetails}>Cancel</button>
+                    <button type="submit" onClick={handleSaveGame} className="bg-white font-semibold m-1.5 py-2.5 px-3 text-center  rounded-full">Save</button>
+                    <button onClick={onExitDetails} className="bg-white font-semibold m-1.5 py-2.5 px-3 text-center  rounded-full">Cancel</button>
                 </form>
             </div>
         );
     }
-    console.log("Genres prop in GameDetails:1", genres);
-    console.log(editedGame)
+
     return (
-        <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-green-300">
+        <div className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-white">
+            <div className="content-center font-semibold border-8 border-gray-200 rounded-lg w-1/5 inline-block m-10 p-5">
             <h2>Game Details</h2>
             <p>Name: {game.name}</p>
             <p>Description: {game.description}</p>
@@ -237,6 +166,8 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
             <p>Release Date: {game.releaseDate}</p>
 
 
+
+
             <p>
                 Genres:
                 {game.genres &&
@@ -245,23 +176,13 @@ const GameDetails: React.FC<GameDetailsProps> = ({ game, onExitDetails, onDelete
                     ))}
             </p>
 
-
-            <button onClick={handleEditClick}>Edit</button>
-            <button onClick={handleDeleteGame}>Delete</button>
-            <button onClick={onExitDetails}>Back</button>
-        </div>
+            <button onClick={handleEditClick} className="bg-gray-200 m-1.5 py-2.5 px-3 text-center  rounded-full">Edit</button>
+            <button onClick={handleDeleteGame} className="bg-gray-200 m-1.5 py-2.5 px-3 text-center  rounded-full">Delete</button>
+            <button onClick={onExitDetails} className="bg-gray-200 m-1.5 py-2.5 px-3 text-center  rounded-full">Back</button>
+        </div></div>
     );
 };
 
-
-
-
-
-
-
-
 export default GameDetails;
-
-
 
 
