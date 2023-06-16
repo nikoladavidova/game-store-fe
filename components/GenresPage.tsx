@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {Genre} from "./types"
+import {Genre} from "./proptypes"
 export async function fetchGenres() {
     try {
         const response = await fetch('http://localhost:3000/genres', {

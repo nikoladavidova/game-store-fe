@@ -1,5 +1,5 @@
 import React from 'react';
-import { Genre } from "./types";
+import { Genre } from "./proptypes";
 
 interface GenreSelectionProps {
     genres: Genre[];
@@ -8,12 +8,7 @@ interface GenreSelectionProps {
     onGenreDeselect: (genreId: string) => void;
 }
 
-export const GenreSelection: React.FC<GenreSelectionProps> = ({
-                                                                  genres,
-                                                                  selectedGenres,
-                                                                  onGenreSelect,
-                                                                  onGenreDeselect,
-                                                              }) => {
+export const GenreSelection: React.FC<GenreSelectionProps> = ({genres, selectedGenres, onGenreSelect, onGenreDeselect,}) => {
     const handleGenreToggle = (genre: { id: string; name: string }) => {
         const genreId = genre.id;
         if (selectedGenres.some((selectedGenre) => selectedGenre.id === genreId)) {

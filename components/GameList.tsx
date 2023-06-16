@@ -3,7 +3,7 @@ import GameDetails from "./GameDetails";
 import GenresPage from "./GenresPage";
 
 import {GenreSelection} from "./GenresSelection";
-import {GameProps, Genre} from "./types";
+import {GameProps, Genre} from "./proptypes";
 interface GameListProps{
     games: GameProps[];
     genres: Genre[];

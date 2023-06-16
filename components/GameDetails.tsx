@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GenresPage from './GenresPage';
 import { GenreSelection } from './GenresSelection';
-import { GameProps, Genre } from './types';
+import { GameProps, Genre } from './proptypes';
 
 interface GameDetailsProps {
     game: GameProps;
@@ -11,12 +11,7 @@ interface GameDetailsProps {
     genres: Genre[];
 }
 
-const GameDetails: React.FC<GameDetailsProps> = ({
-                                                     game,
-                                                     onExitDetails,
-                                                     onDeleteGame,
-                                                     onSaveGame,
-                                                 }) => {
+const GameDetails: React.FC<GameDetailsProps> = ({game, onExitDetails, onDeleteGame, onSaveGame,}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedGame, setEditedGame] = useState<GameProps>(game);
     const [selectedGenres, setSelectedGenres] = useState<{ id: string; name: string }[]>([]);
@@ -31,9 +26,7 @@ const [genres, setGenres]=useState<Genre[]>([]);
 
         setEditedGame((prevGame) => ({
             ...prevGame,
-            [name]: numberInputs,
-        }));
-    };
+            [name]: numberInputs,}));};
 
     const handleSaveGame = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
