@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import GameDetails from "./GameDetails";
 import GenresPage from "./GenresPage";
 

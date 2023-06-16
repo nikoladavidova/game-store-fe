@@ -1,4 +1,3 @@
-import React from 'react';
 import { Genre } from "./proptypes";
 
 interface GenreSelectionProps {

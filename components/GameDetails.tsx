@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import GenresPage from './GenresPage';
 import { GenreSelection } from './GenresSelection';
 import { GameProps, Genre } from './proptypes';

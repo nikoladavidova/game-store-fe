@@ -3,10 +3,13 @@ import GameList from "../../components/GameList";
 import CreateGame from "../../components/CreateGame";
 import GameDetails from "../../components/GameDetails";
 import GenresPage from "../../components/GenresPage";
-import React, {useState} from "react";
+import {useState} from "react";
+import {GameProps, Genre} from "../../components/proptypes";
 
 interface ProfilePageProps {
     onLogout: () => void;
+    game: GameProps;
+    genres: Genre[];
 }
 
 
@@ -21,7 +24,7 @@ const ProfilePage = ({ onLogout }:ProfilePageProps ) => {
 
     const { data, error } = useSWR('http://localhost:3000/user/me', fetcher);
     if (error) {
-        console.log('Error:', error);
+        console.log(error);
     }
     if (!data) {
         return <p>loadig</p>;
